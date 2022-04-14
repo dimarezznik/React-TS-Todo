@@ -1,0 +1,57 @@
+input{
+    font-size: 25px;
+    padding: 20px;
+    border-radius: 10px;
+}
+button{
+    font-size: 25px;
+    padding: 20px;
+    border-radius: 10px;
+}
+.li_bl{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox{
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+ul li{
+    display: flex;
+}
+
+.inp_class{
+    font-size: 30px;
+
+    color: white;
+    background-color: lightblue;
+    border: 0;
+}
+
+.inp_class:focus{
+    outline: none;
+}
+
+li{
+    position: relative;
+}
+
+span{
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    color: red;
+}
+
+.light_li{
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    background-color: lightblue;
+}
