@@ -1,4 +1,4 @@
-import React, {FormEvent} from "react";
+import React from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm/TodoForm";
 
@@ -13,13 +13,13 @@ type StateType = {
     currentItem: ItemType
 }
 
-class App extends React.Component {
+class App extends React.Component<{}, StateType> {
     state: StateType = {
         items: [],
         currentItem: {
             id: 0,
             text: "",
-            check: true,
+            check: false,
         },
     };
 
@@ -28,6 +28,7 @@ class App extends React.Component {
             currentItem: {
                 text: e.target.value,
                 id: Date.now(),
+                check: false
             },
         });
     };
@@ -41,8 +42,10 @@ class App extends React.Component {
                 currentItem: {
                     id: 0,
                     text: "",
+                    check: false
                 },
             });
+            console.log(this.state)
         }
     };
 
@@ -66,11 +69,11 @@ class App extends React.Component {
     };
 
 
-    checkedBool = (e: boolean, id: number): void => {
+    checkedBool = (id: number): void => {
         const items = this.state.items;
         items.map((item: ItemType) => {
             if (id === item.id) {
-                item.check = e;
+                item.check ? item.check = false : item.check = true
             }
         });
         this.setState({
@@ -95,7 +98,6 @@ class App extends React.Component {
         this.setState({
             items
         });
-        console.log(items)
     }
 
     render() {

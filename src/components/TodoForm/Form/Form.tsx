@@ -21,7 +21,7 @@ class Form extends React.PureComponent<TodoProps, any> {
                     onChange={this.props.handleInput}
                 />
                 <button onClick={this.props.addTodo}>добавить задачу</button>
-                <button onClick={(e) => this.props.allMarkTodo(e)} >отметить все</button>
+                <button onClick={this.props.allMarkTodo} >отметить все</button>
                 <button onClick={this.props.deleteMarkTodo} >удалить отмеченное</button>
 
             </form>

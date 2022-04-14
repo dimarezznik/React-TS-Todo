@@ -25,25 +25,29 @@ ul li{
     display: flex;
 }
 
-.inp_class{
+.inp_class_light{
     font-size: 30px;
-
     color: white;
     background-color: lightblue;
     border: 0;
 }
 
-.inp_class:focus{
-    outline: none;
+.inp_class_dark {
+    font-size: 30px;
+    color: white;
+    background-color: darkblue;
+    border: 0;
 }
 
 li{
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
 }
 
 span{
-    position: absolute;
-    right: 20px;
     cursor: pointer;
     color: red;
 }
@@ -54,4 +58,11 @@ span{
     padding: 20px;
     color: white;
     background-color: lightblue;
+}
+.dark_li{
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    background-color: darkblue;
 }

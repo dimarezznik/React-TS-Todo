@@ -7,7 +7,7 @@ export interface TodoProps {
     deleteTodo: (id: number) => void,
     items: Array<ItemType>,
     textUpdate: (text: string, id: number) => void,
-    checkedBool: (e: boolean, id: number) => void,
+    checkedBool: (id: number) => void,
 }
 
 class Todo extends React.Component<TodoProps, any> {

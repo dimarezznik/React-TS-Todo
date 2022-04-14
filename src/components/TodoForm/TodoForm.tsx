@@ -1,4 +1,4 @@
-import React, {FormEvent} from "react";
+import React from "react";
 import s from "./TodoForm.module.css";
 import Form from "./Form/Form";
 import Todo from "./Todo/Todo";
@@ -11,7 +11,7 @@ interface TodoProps {
     handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void,
     addTodo: (e: React.FormEvent) => void,
     textUpdate: (text: string, id: number) => void,
-    checkedBool: (e: boolean, id: number) => void,
+    checkedBool: (id: number) => void,
     deleteMarkTodo: (e: React.FormEvent) => void,
     allMarkTodo: (e: React.FormEvent) => void
 }
