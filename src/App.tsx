@@ -1,122 +1,119 @@
 import React from "react";
 import "./App.css";
-import TodoForm from "./components/TodoForm/TodoForm";
+import Form from "./components/Form/Form";
+import Todo from "./components/Todo/Todo";
 
 export type ItemType = {
-    id: number,
-    text: string,
-    check: boolean
-}
+  id: number;
+  text: string;
+  check: boolean;
+};
 
 type StateType = {
-    items: Array<ItemType>,
-    currentItem: ItemType
-}
+  items: Array<ItemType>;
+  currentItem: ItemType;
+  findEl?: ItemType;
+};
 
 class App extends React.Component<{}, StateType> {
-    state: StateType = {
-        items: [],
+  state: StateType = {
+    items: [],
+    currentItem: {
+      id: 0,
+      text: "",
+      check: false,
+    },
+  };
+
+  findList = (id: number) => {
+    const findLi = this.state.items.find((item) => item.id === id);
+    return findLi;
+  };
+
+  handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      currentItem: {
+        text: e.target.value,
+        id: Date.now(),
+        check: false,
+      },
+    });
+  };
+
+  addTodo = (): void => {
+    if (this.state.currentItem.text) {
+      const newItems = [...this.state.items, this.state.currentItem];
+      this.setState({
+        items: newItems,
         currentItem: {
-            id: 0,
-            text: "",
-            check: false,
+          id: 0,
+          text: "",
+          check: false,
         },
-    };
-
-    handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({
-            currentItem: {
-                text: e.target.value,
-                id: Date.now(),
-                check: false
-            },
-        });
-    };
-
-    addTodo = (e: React.FormEvent) : void => {
-        e.preventDefault();
-        if (this.state.currentItem.text !== "") {
-            const newItems = [...this.state.items, this.state.currentItem];
-            this.setState({
-                items: newItems,
-                currentItem: {
-                    id: 0,
-                    text: "",
-                    check: false
-                },
-            });
-            console.log(this.state)
-        }
-    };
-
-    deleteTodo = (id: number): void => {
-        const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
-        this.setState({
-            items: filteredItems,
-        });
-    };
-
-    textUpdate = (text: string, id: number): void => {
-        const items = this.state.items;
-        items.map((item: ItemType) => {
-            if (id === item.id) {
-                item.text = text;
-            }
-        });
-        this.setState({
-            items
-        });
-    };
-
-
-    checkedBool = (id: number): void => {
-        const items = this.state.items;
-        items.map((item: ItemType) => {
-            if (id === item.id) {
-                item.check ? item.check = false : item.check = true
-            }
-        });
-        this.setState({
-            items
-        });
+      });
     }
+  };
 
-    deleteMarkTodo = (e: React.FormEvent): void => {
-        e.preventDefault()
-        const filteredItems = this.state.items.filter((item: ItemType) => !item.check);
-        this.setState({
-            items: filteredItems,
-        });
-    }
+  deleteTodo = (id: number): void => {
+    const filteredItems = this.state.items.filter(
+      (item: ItemType) => item.id !== id
+    );
+    this.setState({ items: filteredItems });
+  };
 
-    allMarkTodo = (e: any): void => {
-        e.preventDefault()
-        const items = this.state.items;
-        items.map((item: ItemType) => {
-                item.check = true;
-        });
-        this.setState({
-            items
-        });
-    }
+  textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: number): void => {
+    const findEl: ItemType | undefined = this.findList(id);
 
-    render() {
-        return (
-            <div className="App">
-                <TodoForm
-                    deleteTodo={this.deleteTodo}
-                    currentItem={this.state.currentItem}
-                    items={this.state.items}
-                    handleInput={this.handleInput}
-                    addTodo={this.addTodo}
-                    textUpdate={this.textUpdate}
-                    checkedBool={this.checkedBool}
-                    deleteMarkTodo={this.deleteMarkTodo}
-                    allMarkTodo={this.allMarkTodo}
-                />
-            </div>
-        );
+    if (findEl) {
+      findEl.text = e.target.value;
+      this.setState({ findEl });
     }
+  };
+
+  checkedBool = (id: number): void => {
+    const findEl: ItemType | undefined = this.findList(id);
+
+    if (findEl) {
+      findEl.check ? (findEl.check = false) : (findEl.check = true);
+      this.setState({ findEl });
+    }
+  };
+
+  deleteMarkTodo = (): void => {
+    const filteredItems = this.state.items.filter(
+      (item: ItemType) => !item.check
+    );
+    this.setState({ items: filteredItems });
+  };
+
+  allMarkTodo = (): void => {
+    const items = this.state.items;
+    items.map((item: ItemType) => {
+      item.check = true;
+      return item;
+    });
+    this.setState({ items });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <Form
+          allMarkTodo={this.allMarkTodo}
+          currentItem={this.state.currentItem}
+          handleInput={this.handleInput}
+          addTodo={this.addTodo}
+          deleteMarkTodo={this.deleteMarkTodo}
+        />
+        <Todo
+          items={this.state.items}
+          checkedBool={this.checkedBool}
+          textUpdate={this.textUpdate}
+          deleteTodo={this.deleteTodo}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
