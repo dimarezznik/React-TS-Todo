@@ -25,6 +25,14 @@ class App extends React.Component<{}, StateType> {
     },
   };
 
+  clearState = () => {
+    return {
+      id: 0,
+      text: "",
+      check: false,
+    };
+  };
+
   findList = (id: number) => {
     const findLi = this.state.items.find((item) => item.id === id);
     return findLi;
@@ -41,17 +49,12 @@ class App extends React.Component<{}, StateType> {
   };
 
   addTodo = (): void => {
-    if (this.state.currentItem.text) {
-      const newItems = [...this.state.items, this.state.currentItem];
-      this.setState({
-        items: newItems,
-        currentItem: {
-          id: 0,
-          text: "",
-          check: false,
-        },
-      });
-    }
+    if (!this.state.currentItem.text) return;
+    const newItems = [...this.state.items, this.state.currentItem];
+    this.setState({
+      items: newItems,
+      currentItem: this.clearState(),
+    });
   };
 
   deleteTodo = (id: number): void => {
