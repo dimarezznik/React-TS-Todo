@@ -10,8 +10,9 @@ interface InputType {
 }
 
 export default class Input extends React.PureComponent<InputType, any> {
-  onChangeMethod = (e: React.ChangeEvent<HTMLInputElement>): void =>
+  onChangeMethod = (e: React.ChangeEvent<HTMLInputElement>): void => {
     this.props.onChange(e);
+  };
   render() {
     return (
       <input

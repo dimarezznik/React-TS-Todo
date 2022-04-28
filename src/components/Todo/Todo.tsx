@@ -13,7 +13,7 @@ class Todo extends React.Component<TodoProps, any> {
   render() {
     return (
       <ul>
-        {this.props.items.map((item: ItemType) => {
+        {this.props.items.map((item) => {
           return (
             <TodoLi
               key={item.id}

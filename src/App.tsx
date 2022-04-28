@@ -2,6 +2,9 @@ import React from "react";
 import "./App.css";
 import Form from "./components/Form/Form";
 import Todo from "./components/Todo/Todo";
+import Input from "./components/Input/Input";
+import Button from "./components/Button/Button";
+import { todoStorage } from "./TodoStorage";
 
 export type ItemType = {
   id: number;
@@ -15,6 +18,13 @@ type StateType = {
   findEl?: ItemType;
 };
 
+const clearState = () => {
+  return {
+    id: 0,
+    text: "",
+    check: false,
+  };
+};
 class App extends React.Component<{}, StateType> {
   state: StateType = {
     items: [],
@@ -25,17 +35,8 @@ class App extends React.Component<{}, StateType> {
     },
   };
 
-  clearState = () => {
-    return {
-      id: 0,
-      text: "",
-      check: false,
-    };
-  };
-
   findList = (id: number) => {
-    const findLi = this.state.items.find((item) => item.id === id);
-    return findLi;
+    return this.state.items.find((item) => item.id === id);
   };
 
   handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -50,10 +51,9 @@ class App extends React.Component<{}, StateType> {
 
   addTodo = (): void => {
     if (!this.state.currentItem.text) return;
-    const newItems = [...this.state.items, this.state.currentItem];
     this.setState({
-      items: newItems,
-      currentItem: this.clearState(),
+      items: [...this.state.items, this.state.currentItem],
+      currentItem: clearState(),
     });
   };
 
@@ -65,20 +65,19 @@ class App extends React.Component<{}, StateType> {
   };
 
   textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: number): void => {
-    const findEl: ItemType | undefined = this.findList(id);
-
+    const findEl = this.findList(id);
     if (findEl) {
       findEl.text = e.target.value;
-      this.setState({ findEl });
+      this.setState({ items: this.state.items });
     }
   };
 
   checkedBool = (id: number): void => {
-    const findEl: ItemType | undefined = this.findList(id);
+    const findEl = this.findList(id);
 
     if (findEl) {
       findEl.check ? (findEl.check = false) : (findEl.check = true);
-      this.setState({ findEl });
+      this.setState({ items: this.state.items });
     }
   };
 
@@ -90,12 +89,11 @@ class App extends React.Component<{}, StateType> {
   };
 
   allMarkTodo = (): void => {
-    const items = this.state.items;
-    items.map((item: ItemType) => {
+    this.state.items.map((item: ItemType) => {
       item.check = true;
       return item;
     });
-    this.setState({ items });
+    this.setState({ items: this.state.items });
   };
 
   render() {
@@ -108,6 +106,7 @@ class App extends React.Component<{}, StateType> {
           addTodo={this.addTodo}
           deleteMarkTodo={this.deleteMarkTodo}
         />
+
         <Todo
           items={this.state.items}
           checkedBool={this.checkedBool}

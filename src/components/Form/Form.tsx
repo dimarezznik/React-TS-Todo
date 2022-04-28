@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import s from "./Form.module.css";
 import { ItemType } from "../../App";
 import Button from "../Button/Button";
 import Input from "./../Input/Input";
+import { todoStorage, TodoStorage } from "../../TodoStorage";
 
 interface TodoProps {
   currentItem: ItemType;
@@ -13,8 +14,8 @@ interface TodoProps {
 }
 
 class Form extends React.PureComponent<TodoProps, any> {
-  handleInputMethod = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.props.handleInput(e);
+  componentDidMount() {}
+  componentWillUnmount() {}
 
   addTodoMethod = (e: React.FormEvent): void => {
     this.props.addTodo(e);
@@ -30,6 +31,7 @@ class Form extends React.PureComponent<TodoProps, any> {
     this.props.deleteMarkTodo(e);
     e.preventDefault();
   };
+
   render() {
     return (
       <form className={s.add_form}>
@@ -37,7 +39,7 @@ class Form extends React.PureComponent<TodoProps, any> {
           type="text"
           placeholder="Введите вашу задачу"
           value={this.props.currentItem.text}
-          onChange={this.handleInputMethod}
+          onChange={todoStorage.handleInput}
         />
         <Button onClick={this.addTodoMethod}>добавить задачу</Button>
         <Button onClick={this.allMarkTodoMethod}>отметить все</Button>

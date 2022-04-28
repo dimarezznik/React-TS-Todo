@@ -12,8 +12,10 @@ interface TodoLiPropsType {
 
 class TodoLi extends React.Component<TodoLiPropsType, any> {
   deleteTodoMethod = () => this.props.deleteTodo(this.props.item.id);
-  textUpdateMethod = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.props.textUpdate(e, this.props.item.id);
+  textUpdateMethod = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    this.props.textUpdate(e, id);
+  };
+
   render() {
     return (
       <li>
@@ -29,7 +31,7 @@ class TodoLi extends React.Component<TodoLiPropsType, any> {
               !this.props.item.check ? s.inp_class_light : s.inp_class_dark
             }
             onClick={(e) => e.stopPropagation()}
-            onChange={(e) => this.props.textUpdate(e, this.props.item.id)}
+            onChange={(e) => this.textUpdateMethod(e, this.props.item.id)}
           />
         </div>
         <span onClick={this.deleteTodoMethod}>X</span>
