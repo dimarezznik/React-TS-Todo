@@ -1,5 +1,6 @@
 import React, { FormEvent } from "react";
-import { ItemType } from "./App";
+import { ItemType, ID } from "./App";
+import Button from "./components/Button/Button";
 
 type Subscription<State> = (state: State) => void;
 
@@ -50,8 +51,7 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  addTodo = (e: FormEvent): void => {
-    e.preventDefault();
+  addTodo = (): void => {
     if (!this.state.currentItem.text) return;
     this.state = {
       items: [...this.state.items, { ...this.state.currentItem }],
@@ -60,14 +60,14 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  deleteTodo = (id: number): void => {
+  deleteTodo = (id: ID): void => {
     this.state.items = this.state.items.filter(
       (item: ItemType) => item.id !== id
     );
     this.notify();
   };
 
-  textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: number): void => {
+  textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: ID): void => {
     this.state.items.forEach((item: ItemType) => {
       if (item.id === id) {
         item.text = e.target.value;
@@ -76,7 +76,7 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  checkedBool = (id: number): void => {
+  checkedBool = (id: ID): void => {
     this.state.items.forEach((item: ItemType) => {
       if (item.id === id) {
         item.check ? (item.check = false) : (item.check = true);
@@ -86,16 +86,12 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  deleteMarkTodo = (e: any): void => {
-    e.preventDefault();
-
+  deleteMarkTodo = (): void => {
     this.state.items = this.state.items.filter((item: ItemType) => !item.check);
     this.notify();
   };
 
-  allMarkTodo = (e: any): void => {
-    e.preventDefault();
-
+  allMarkTodo = (): void => {
     this.state.items.forEach((item: ItemType) => {
       item.check = true;
     });

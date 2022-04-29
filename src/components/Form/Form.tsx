@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import s from "./Form.module.css";
 import Button from "../Button/Button";
 import Input from "./../Input/Input";
@@ -15,6 +15,19 @@ class Form extends React.PureComponent {
     todoStorage.unsubscribe(this.force);
   }
 
+  setTodo = (e: FormEvent) => {
+    e.preventDefault();
+    todoStorage.addTodo();
+  };
+  markAllTodo = (e: FormEvent) => {
+    e.preventDefault();
+    todoStorage.allMarkTodo();
+  };
+  deleteMarkTask = (e: FormEvent) => {
+    e.preventDefault();
+    todoStorage.deleteMarkTodo();
+  };
+
   render() {
     return (
       <form className={s.add_form}>
@@ -24,9 +37,9 @@ class Form extends React.PureComponent {
           value={todoStorage.getState().currentItem.text}
           onChange={todoStorage.handleInput}
         />
-        <Button onClick={todoStorage.addTodo}>добавить задачу</Button>
-        <Button onClick={todoStorage.allMarkTodo}>отметить все</Button>
-        <Button onClick={todoStorage.deleteMarkTodo}>удалить отмеченное</Button>
+        <Button onClick={this.setTodo}>добавить задачу</Button>
+        <Button onClick={this.markAllTodo}>отметить все</Button>
+        <Button onClick={this.deleteMarkTask}>удалить отмеченное</Button>
       </form>
     );
   }

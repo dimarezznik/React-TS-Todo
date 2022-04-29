@@ -3,8 +3,12 @@ import "./App.css";
 import Form from "./components/Form/Form";
 import Todo from "./components/Todo/Todo";
 
-export type ItemType = {
+export type ID = {
   id: number;
+};
+
+export type ItemType = {
+  id: ID;
   text: string;
   check: boolean;
 };
@@ -12,7 +16,6 @@ export type ItemType = {
 type StateType = {
   items: Array<ItemType>;
   currentItem: ItemType;
-  findEl?: ItemType;
 };
 
 class App extends React.Component<{}, StateType> {
