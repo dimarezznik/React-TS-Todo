@@ -1,36 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import s from "./Form.module.css";
-import { ItemType } from "../../App";
 import Button from "../Button/Button";
 import Input from "./../Input/Input";
-import { todoStorage, TodoStorage } from "../../TodoStorage";
+import { todoStorage } from "../../TodoStorage";
 
-interface TodoProps {
-  currentItem: ItemType;
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  addTodo: (e: React.FormEvent) => void;
-  deleteMarkTodo: (e: React.FormEvent) => void;
-  allMarkTodo: (e: React.FormEvent) => void;
-}
-
-class Form extends React.PureComponent<TodoProps, any> {
-  componentDidMount() {}
-  componentWillUnmount() {}
-
-  addTodoMethod = (e: React.FormEvent): void => {
-    this.props.addTodo(e);
-    e.preventDefault();
+class Form extends React.PureComponent {
+  force = () => {
+    this.forceUpdate();
   };
-
-  allMarkTodoMethod = (e: React.FormEvent): void => {
-    this.props.allMarkTodo(e);
-    e.preventDefault();
-  };
-
-  deleteMarkTodoMethod = (e: React.FormEvent): void => {
-    this.props.deleteMarkTodo(e);
-    e.preventDefault();
-  };
+  componentDidMount() {
+    todoStorage.subscribe(this.force);
+  }
+  componentWillUnmount() {
+    todoStorage.unsubscribe(this.force);
+  }
 
   render() {
     return (
@@ -38,12 +21,12 @@ class Form extends React.PureComponent<TodoProps, any> {
         <Input
           type="text"
           placeholder="Введите вашу задачу"
-          value={this.props.currentItem.text}
+          value={todoStorage.getState().currentItem.text}
           onChange={todoStorage.handleInput}
         />
-        <Button onClick={this.addTodoMethod}>добавить задачу</Button>
-        <Button onClick={this.allMarkTodoMethod}>отметить все</Button>
-        <Button onClick={this.deleteMarkTodoMethod}>удалить отмеченное</Button>
+        <Button onClick={todoStorage.addTodo}>добавить задачу</Button>
+        <Button onClick={todoStorage.allMarkTodo}>отметить все</Button>
+        <Button onClick={todoStorage.deleteMarkTodo}>удалить отмеченное</Button>
       </form>
     );
   }

@@ -1,28 +1,22 @@
 import React from "react";
-import { ItemType } from "../../App";
 import TodoLi from "./TodoLi/TodoLi";
+import { todoStorage } from "../../TodoStorage";
 
-export interface TodoProps {
-  deleteTodo: (id: number) => void;
-  items: Array<ItemType>;
-  textUpdate: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
-  checkedBool: (id: number) => void;
-}
-
-class Todo extends React.Component<TodoProps, any> {
+class Todo extends React.PureComponent {
+  force = () => {
+    this.forceUpdate();
+  };
+  componentDidMount() {
+    todoStorage.subscribe(this.force);
+  }
+  componentWillUnmount() {
+    todoStorage.unsubscribe(this.force);
+  }
   render() {
     return (
       <ul>
-        {this.props.items.map((item) => {
-          return (
-            <TodoLi
-              key={item.id}
-              item={item}
-              checkedBool={this.props.checkedBool}
-              textUpdate={this.props.textUpdate}
-              deleteTodo={this.props.deleteTodo}
-            />
-          );
+        {todoStorage.state.items.map((item: any) => {
+          return <TodoLi key={item.id} item={item} />;
         })}
       </ul>
     );

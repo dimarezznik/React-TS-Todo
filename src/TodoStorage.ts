@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { ItemType } from "./App";
 
 type Subscription<State> = (state: State) => void;
@@ -26,31 +26,6 @@ export class TodoStorage extends BloC<any> {
     super(state);
   }
 
-  // handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  //   this.state = {
-  //     currentItem: {
-  //       text: e.target.value,
-  //       id: Date.now(),
-  //       check: false,
-  //     },
-  //   };
-  //   this.notify();
-  //   console.log(this.state.currentItem);
-  // };
-  //
-  // increment = () => {
-  //   this.state++;
-  //   this.notify();
-  // };
-  //
-  // decrement = () => {
-  //   this.state--;
-  //   this.notify();
-  // };
-  findList = (id: number) => {
-    return this.state.items.find((item: any) => item.id === id);
-  };
-
   clearState = () => {
     return {
       id: 0,
@@ -59,8 +34,13 @@ export class TodoStorage extends BloC<any> {
     };
   };
 
+  getState = () => {
+    return this.state;
+  };
+
   handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     this.state = {
+      ...this.state,
       currentItem: {
         text: e.target.value,
         id: Date.now(),
@@ -70,56 +50,55 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  addTodo = (): void => {
+  addTodo = (e: FormEvent): void => {
+    e.preventDefault();
     if (!this.state.currentItem.text) return;
     this.state = {
-      items: [...this.state.items, this.state.currentItem],
+      items: [...this.state.items, { ...this.state.currentItem }],
       currentItem: this.clearState(),
     };
     this.notify();
   };
 
   deleteTodo = (id: number): void => {
-    const filteredItems = this.state.items.filter(
+    this.state.items = this.state.items.filter(
       (item: ItemType) => item.id !== id
     );
-    this.state = { items: filteredItems };
     this.notify();
   };
 
   textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: number): void => {
-    const findEl = this.findList(id);
-    if (findEl) {
-      findEl.text = e.target.value;
-      this.state = { items: this.state.items };
-    }
+    this.state.items.forEach((item: ItemType) => {
+      if (item.id === id) {
+        item.text = e.target.value;
+      }
+    });
     this.notify();
   };
 
   checkedBool = (id: number): void => {
-    const findEl = this.findList(id);
-
-    if (findEl) {
-      findEl.check ? (findEl.check = false) : (findEl.check = true);
-      this.state = { items: this.state.items };
-    }
-    this.notify();
-  };
-
-  deleteMarkTodo = (): void => {
-    const filteredItems = this.state.items.filter(
-      (item: ItemType) => !item.check
-    );
-    this.state = { items: filteredItems };
-    this.notify();
-  };
-
-  allMarkTodo = (): void => {
-    this.state.items.map((item: ItemType) => {
-      item.check = true;
-      return item;
+    this.state.items.forEach((item: ItemType) => {
+      if (item.id === id) {
+        item.check ? (item.check = false) : (item.check = true);
+      }
     });
-    this.state = { items: this.state.items };
+
+    this.notify();
+  };
+
+  deleteMarkTodo = (e: any): void => {
+    e.preventDefault();
+
+    this.state.items = this.state.items.filter((item: ItemType) => !item.check);
+    this.notify();
+  };
+
+  allMarkTodo = (e: any): void => {
+    e.preventDefault();
+
+    this.state.items.forEach((item: ItemType) => {
+      item.check = true;
+    });
     this.notify();
   };
 }
