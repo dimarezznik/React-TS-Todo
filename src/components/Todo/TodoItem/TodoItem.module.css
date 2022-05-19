@@ -17,7 +17,7 @@ ul li{
 .inp_class_light{
     font-size: 30px;
     color: white;
-    background-color: lightblue;
+    background-color: lightgray;
     border: 0;
 }
 
@@ -46,7 +46,7 @@ span{
     border-radius: 15px;
     padding: 20px;
     color: white;
-    background-color: lightblue;
+    background-color: lightgray;
 }
 .dark_li{
     border: 1px solid #000;

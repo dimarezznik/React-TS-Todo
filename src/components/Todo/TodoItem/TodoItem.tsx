@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./TodoLi.module.css";
+import s from "./TodoItem.module.css";
 import { ItemType } from "../../../App";
 import Input from "./../../Input/Input";
 import { todoStorage } from "../../../TodoStorage";
@@ -8,12 +8,23 @@ interface TodoLiPropsType {
   item: ItemType;
 }
 
-class TodoLi extends React.Component<TodoLiPropsType, any> {
+class TodoItem extends React.Component<TodoLiPropsType, {}> {
+  updateTextItem = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    todoStorage.textUpdate(e, this.props.item.id);
+  };
+
+  deleteTodoItem = (): void => {
+    todoStorage.deleteTodo(this.props.item.id);
+  };
+
+  propagationStop = (e: any): void => {
+    e.stopPropagation();
+  };
+
   render() {
     return (
-      <li>
+      <>
         <div
-          key={this.props.item.id}
           className={!this.props.item.check ? s.light_li : s.dark_li}
           onClick={() => todoStorage.checkedBool(this.props.item.id)}
         >
@@ -23,16 +34,14 @@ class TodoLi extends React.Component<TodoLiPropsType, any> {
             className={
               !this.props.item.check ? s.inp_class_light : s.inp_class_dark
             }
-            onClick={(e) => e.stopPropagation()}
-            onChange={(e) => todoStorage.textUpdate(e, this.props.item.id)}
+            onClick={this.propagationStop}
+            onChange={this.updateTextItem}
           />
         </div>
-        <span onClick={() => todoStorage.deleteTodo(this.props.item.id)}>
-          X
-        </span>
-      </li>
+        <span onClick={this.deleteTodoItem}>X</span>
+      </>
     );
   }
 }
 
-export default TodoLi;
+export default TodoItem;

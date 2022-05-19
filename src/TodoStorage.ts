@@ -1,10 +1,9 @@
-import React, { FormEvent } from "react";
-import { ItemType, ID } from "./App";
-import Button from "./components/Button/Button";
+import React from "react";
+import { ItemType } from "./App";
 
 type Subscription<State> = (state: State) => void;
 
-class BloC<State> {
+class BusinessLogicTodo<State> {
   private listeners: Set<Subscription<State>> = new Set([]);
 
   constructor(public state: State) {}
@@ -22,7 +21,7 @@ class BloC<State> {
   }
 }
 
-export class TodoStorage extends BloC<any> {
+export class TodoStorage extends BusinessLogicTodo<any> {
   constructor(public state: any) {
     super(state);
   }
@@ -60,14 +59,14 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  deleteTodo = (id: ID): void => {
+  deleteTodo = (id: number): void => {
     this.state.items = this.state.items.filter(
       (item: ItemType) => item.id !== id
     );
     this.notify();
   };
 
-  textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: ID): void => {
+  textUpdate = (e: React.ChangeEvent<HTMLInputElement>, id: number): void => {
     this.state.items.forEach((item: ItemType) => {
       if (item.id === id) {
         item.text = e.target.value;
@@ -76,13 +75,12 @@ export class TodoStorage extends BloC<any> {
     this.notify();
   };
 
-  checkedBool = (id: ID): void => {
+  checkedBool = (id: number): void => {
     this.state.items.forEach((item: ItemType) => {
       if (item.id === id) {
         item.check ? (item.check = false) : (item.check = true);
       }
     });
-
     this.notify();
   };
 

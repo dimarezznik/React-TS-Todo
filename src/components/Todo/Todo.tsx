@@ -1,5 +1,5 @@
 import React from "react";
-import TodoLi from "./TodoLi/TodoLi";
+import TodoItem from "./TodoItem/TodoItem";
 import { todoStorage } from "../../TodoStorage";
 
 class Todo extends React.PureComponent {
@@ -16,7 +16,11 @@ class Todo extends React.PureComponent {
     return (
       <ul>
         {todoStorage.state.items.map((item: any) => {
-          return <TodoLi key={item.id} item={item} />;
+          return (
+            <li key={item.id}>
+              <TodoItem item={item} />
+            </li>
+          );
         })}
       </ul>
     );
