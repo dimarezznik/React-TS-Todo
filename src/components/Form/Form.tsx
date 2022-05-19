@@ -8,6 +8,7 @@ class Form extends React.PureComponent {
   force = () => {
     this.forceUpdate();
   };
+
   componentDidMount() {
     todoStorage.subscribe(this.force);
   }
