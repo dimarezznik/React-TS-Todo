@@ -10,7 +10,7 @@ interface InputType {
   onClick?: (e: MouseEvent<HTMLInputElement>) => void;
 }
 
-export default class Input extends React.PureComponent<InputType, any> {
+export default class Input extends React.Component<InputType, any> {
   onChangeMethod = (e: React.ChangeEvent<HTMLInputElement>): void => {
     this.props.onChange(e);
   };

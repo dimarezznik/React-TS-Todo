@@ -21,20 +21,6 @@ class TodoItem extends React.Component<TodoLiPropsType, {}> {
     e.stopPropagation();
   };
 
-  shouldComponentUpdate(
-    nextProps: Readonly<TodoLiPropsType>,
-    nextState: Readonly<{}>,
-    nextContext: any
-  ): boolean {
-    let key: keyof ItemType;
-    for (key in this.props.item) {
-      if (this.props.item[key] !== nextProps.item[key]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   render() {
     return (
       <>
